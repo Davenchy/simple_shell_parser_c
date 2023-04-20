@@ -46,6 +46,15 @@
 > 
 ```
 
+- inactive mode
+
+```bash
+$ echo "hello world" | a.out
+[CMD]=>[hello]->[world]->|
+[NULL]
+$
+```
+
 ## Build and Run
 
 `gcc -Wall -Werror -Wextra -pedantic -std=gnu89 *.c && a.out`

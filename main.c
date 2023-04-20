@@ -5,12 +5,16 @@
 
 int main(void) {
 	cmd_t *head;
+	int fd = STDIN_FILENO;
 
 loop:
-	printf("> ");
+	if (isatty(fd))
+		printf("> ");
 	fflush(stdout);
-	head = getcmds(STDIN_FILENO);
+	head = getcmds(fd);
 	cmd_print(head);
 	cmd_destroy(head);
-	goto loop;
+	if (isatty(fd))
+		goto loop;
+	return 0;
 }

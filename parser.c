@@ -60,7 +60,6 @@ int parse(parser_t *p) {
 			if (!apply_token(p)) goto kill;
 		} else if (strchr("\n\r;", c) || c == 0 || c == EOF) {
 			if (!apply_cmd(p)) goto kill;
-			if (c == EOF) return 2;
 		} else if (c == '|' && l != c && n != c) {
 			if (!apply_type(CMDTYPE_PIPE, p, NULL)) goto kill;
 		} else if (strchr("&|", c) && l != c && n == c) {
@@ -85,6 +84,7 @@ kill:
 }
 
 cmd_t *getcmds(int fildes) {
+	int read_state = 0;
 	parser_t parser;
 
 	parser.bufsize = 0;
@@ -97,13 +97,15 @@ cmd_t *getcmds(int fildes) {
 	if (!parser.head) goto kill;
 	
 	parser.bufsize = read(fildes, parser.buf, BUFSIZE);
-	if (parser.bufsize == -1) {
+	if (!parser.bufsize) goto end;
+	else if (parser.bufsize == -1) {
 		perror("Error");
 		goto kill;
 	}
 
-	if (!parse(&parser)) goto kill;
-
+	read_state = parse(&parser);
+	if (!read_state) goto kill;
+end:
 	return parser.head;
 kill:
 	cmd_destroy(parser.head);
