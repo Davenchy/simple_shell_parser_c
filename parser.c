@@ -54,23 +54,25 @@ int parse(parser_t *p) {
 			goto apply_str_ignore;
 		} else if (c == '"') {
 			p->str = !p->str;
+		} else if (c == '$' && n && l != '\\') {
+			if (!apply_token(p)) goto kill;
+			p->tokensize = strcspn(p->buf + p->ptr, " \n\t\r\"");
+			memcpy(p->token, p->buf + p->ptr, p->tokensize);
+			if (p->tokensize > 0)
+				p->ptr += p->tokensize - 1;
+			if (!apply_token(p)) goto kill;
 		} else if (p->str) {
 			goto apply_str_ignore;
 		} else if (strchr(" \t", c)) {
-			if (!apply_token(p)) goto kill;
+			if (!apply_token(p)) goto kill; /* handle end of var */
 		} else if (strchr("\n\r;", c) || c == 0 || c == EOF) {
-			if (!apply_cmd(p)) goto kill;
+			if (!apply_cmd(p)) goto kill; /* handle end of var */
 		} else if (c == '|' && l != c && n != c) {
 			if (!apply_type(CMDTYPE_PIPE, p, NULL)) goto kill;
 		} else if (strchr("&|", c) && l != c && n == c) {
 			char type = c == '&' ? CMDTYPE_AND : c == '|' ? CMDTYPE_OR : 0;
 			if (!apply_type(type, p, NULL)) goto kill;
 			p->ptr++;
-		} else if (c == '$' && n) {
-			size_t size = strcspn(p->buf + p->ptr + 1, " \n\t\r");
-			arg_t *arg = arg_create(p->buf + p->ptr + 1, size);
-			if (!arg || !apply_type(CMDTYPE_VAR, p, arg)) goto kill;
-			p->ptr += size;
 		} else if (c == '#') {
 			p->ptr += strcspn(p->buf + p->ptr + 1, "\n\t\r");
 		} else {

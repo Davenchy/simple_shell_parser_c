@@ -4,6 +4,15 @@
 
 ## Example
 
+- handle variables
+
+```bash
+> hello $world "$every one"
+[CMD]=>[hello]->[$world]->[$every]->[ one]->|
+[NULL]
+> 
+```
+
 ```bash
 > "hello \"world\"";new command && stop here || stop here | zero
 [CMD]=>[hello "world"]->|
@@ -32,11 +41,9 @@
 
 ```bash
 > echo $$ && echo $? && echo $PATH && exit # && ls -la
-[CMD]=>[echo]->|
-[VAR]($)
+[CMD]=>[echo]->[$$]->|
 [AND]
-[CMD]=>[echo]->|
-[VAR](?)
+[CMD]=>[echo]->[$?]->|
 [AND]
 [CMD]=>[echo]->|
 [VAR](PATH)

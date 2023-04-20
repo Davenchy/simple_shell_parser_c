@@ -47,9 +47,6 @@ void cmd_print(cmd_t *head) {
 				printf("[CMD]=>");
 				arg_print(head->arg);
 				break;
-			case CMDTYPE_VAR:
-				printf("[VAR](%s)\n", head->arg->token);
-				break;
 			case CMDTYPE_OR:
 				puts("[OR]");
 				break;
