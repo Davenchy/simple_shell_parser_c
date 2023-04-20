@@ -5,7 +5,7 @@
 ## Example
 
 ```bash
-> "hello \"world\";new command && stop here || stop here | zero
+> "hello \"world\"";new command && stop here || stop here | zero
 [CMD]=>[hello "world"]->|
 [CMD]=>[new]->[command]->|
 [AND]
@@ -26,6 +26,22 @@
 [CMD]=>[c]->|
 [PIPE]
 [CMD]=>[d]->|
+[NULL]
+> 
+```
+
+```bash
+> echo $$ && echo $? && echo $PATH && exit # && ls -la
+[CMD]=>[echo]->|
+[VAR]($)
+[AND]
+[CMD]=>[echo]->|
+[VAR](?)
+[AND]
+[CMD]=>[echo]->|
+[VAR](PATH)
+[AND]
+[CMD]=>[exit]->|
 [NULL]
 > 
 ```

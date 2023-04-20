@@ -67,6 +67,13 @@ int parse(parser_t *p) {
 			char type = c == '&' ? CMDTYPE_AND : c == '|' ? CMDTYPE_OR : 0;
 			if (!apply_type(type, p, NULL)) goto kill;
 			p->ptr++;
+		} else if (c == '$' && n) {
+			size_t size = strcspn(p->buf + p->ptr + 1, " \n\t\r");
+			arg_t *arg = arg_create(p->buf + p->ptr + 1, size);
+			if (!arg || !apply_type(CMDTYPE_VAR, p, arg)) goto kill;
+			p->ptr += size;
+		} else if (c == '#') {
+			p->ptr += strcspn(p->buf + p->ptr + 1, "\n\t\r");
 		} else {
 apply_str_ignore:
 			p->token[p->tokensize++] = c;
