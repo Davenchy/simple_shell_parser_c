@@ -17,6 +17,19 @@
 [NULL]
 ```
 
+```bash
+> a && b || c | d
+[CMD]=>[a]->|
+[AND]
+[CMD]=>[b]->|
+[OR]
+[CMD]=>[c]->|
+[PIPE]
+[CMD]=>[d]->|
+[NULL]
+> 
+```
+
 ## Build and Run
 
 `gcc -Wall -Werror -Wextra -pedantic -std=gnu89 *.c && a.out`

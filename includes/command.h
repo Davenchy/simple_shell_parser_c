@@ -5,9 +5,10 @@
 #define __COMMAND_H__
 #define CMDTYPE_NULL 0
 #define CMDTYPE_CMD 1
-#define CMDTYPE_AND 2
-#define CMDTYPE_OR 3
-#define CMDTYPE_PIPE 4
+#define CMDTYPE_VAR 2
+#define CMDTYPE_AND 3
+#define CMDTYPE_OR 4
+#define CMDTYPE_PIPE 5
 
 typedef struct arg_s {
 	char *token;
