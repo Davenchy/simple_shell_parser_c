@@ -1,6 +1,10 @@
 # Command Parser
 
-- simple command parser
+- simple command lexer
+
+## Build and Run
+
+`gcc -Wall -Werror -Wextra -pedantic -std=gnu89 *.c && a.out`
 
 ## Example
 
@@ -8,6 +12,7 @@
 
 ```bash
 > hello $world "$every one"
+[hello]
 [CMD]=>[hello]->[$world]->[$every]->[ one]->|
 [NULL]
 > 
@@ -62,6 +67,3 @@ $ echo "hello world" | a.out
 $
 ```
 
-## Build and Run
-
-`gcc -Wall -Werror -Wextra -pedantic -std=gnu89 *.c && a.out`
